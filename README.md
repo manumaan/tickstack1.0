@@ -1,12 +1,10 @@
-# InfluxData 1.x Sandbox
-
-***[InfluxDB 2.x is now available](https://portal.influxdata.com/downloads/) and available via [Docker Hub](https://hub.docker.com/_/influxdb).  
-InfluxDB 2.x includes a native user interface, batch-style task processing and more. [Get Started Here!](https://docs.influxdata.com/influxdb/v2.0/get-started/)***
-
-This repo is a quick way to get the entire 1.x TICK Stack spun up and working together. It uses [Docker](https://www.docker.com/) to spin up the full TICK stack in a connected 
-fashion. This is heavily tested on MacOS and should mostly work on Linux and Windows.
-
-To get started you need a running docker installation. If you don't have one, you can download Docker for [Mac](https://www.docker.com/docker-mac) or [Windows](https://www.docker.com/docker-windows), or follow the installation instructions for Docker CE for your [Linux distribution](https://docs.docker.com/engine/installation/#server).
+# Custom TICK stack Sandboc
+This is a custom TICK stack sandbox with:  
+TELEGRAF 1.13
+INFLUXDB 1.8
+CHRONOGRAF latest
+KAPACITOR 1.5.5
+GRAFANA 7.1.0 
 
 ### Running
 
@@ -33,6 +31,10 @@ To get started just run `./sandbox up`. You browser will open two tabs:
 
 - `localhost:8888` - Chronograf's address. You will use this as a management UI for the full stack
 - `localhost:3010` - Documentation server. This contains a simple markdown server for tutorials and documentation.
+
+Grafana can be accessed at localhost:3000 
+Default credentials for Grafana: admin/admin 
+Enter these and change the default password. 
 
 > NOTE: Make sure to stop any existing installations of `influxdb`, `kapacitor` or `chronograf`. If you have them running the Sandbox will run into port conflicts and fail to properly start. In this case stop the existing processes and run `./sandbox restart`. Also make sure you are **not** using _Docker Toolbox_.
 
