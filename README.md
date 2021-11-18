@@ -1,4 +1,4 @@
-# Custom TICK stack Sandboc
+# Custom TICK stack Sandbox
 This is a custom TICK stack sandbox with:  
 TELEGRAF 1.13
 INFLUXDB 1.8
