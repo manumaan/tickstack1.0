@@ -1,9 +1,10 @@
-# Custom TICK stack Sandbox
+# Custom TICK stack Sandbox 2.0
 This is a custom TICK stack sandbox with:  
-TELEGRAF 1.13
-INFLUXDB 1.8
-CHRONOGRAF latest
-KAPACITOR 1.5.5
+
+TELEGRAF 1.2
+INFLUXDB 2.1
+CHRONOGRAF 1.9
+KAPACITOR 1.6
 GRAFANA 7.1.0 
 
 ### Running
@@ -48,18 +49,34 @@ Click Save & Test
 
 Once the Sandbox launches, you should see your dashboard appear in your browser:
 
-![Dashboard](./documentation/static/images/landing-page.png)
+### Configuration Steps 
+Once sandbox is up, login to the influx db admin page: http://localhost:8086/
+Enter these details:
+Org: org
+User: admin 
+Password: admin123
+Bucket: bucket1
+Ensure the database initialization is completed. 
 
-You are ready to get started with the TICK Stack!
+If telegraf docker container is not running yet, restart it from docker desktop and check status. 
+Once telegraf is running, you can check the system metrics coming inside the bucket1 database. 
 
-Click the Host icon in the left navigation bar to see your host (named `telegraf-getting-started`) and its overall status.
-![Host List](./documentation/static/images/host-list.png)
+If kapacitor docker container is not running yet, restart it from docker desktop and check status. 
 
-You can click on `system` hyperlink to see a pre-built dashboard visualizing the basic system stats for your
-host, then check out the tutorials at `http://localhost:3010/tutorials`.
+From Chronograf you can add the database into the config as given here:
+https://docs.influxdata.com/chronograf/v1.9/administration/creating-connections/#manage-influxdb-connections-using-the-chronograf-ui
 
-If you are using the nightly builds and want to get started with Flux, make sure you check out the [Getting Started with Flux](./documentation/static/tutorials/flux-getting-started.md) tutorial.
+TODO: 
+Kapacitor is not getting added in Chronograf. It is working fine on its own
+Telegraf is not getting added in Chronograf, but it is collecting system metrics fine and inserting into influx db. 
 
-> Note: see [influx-stress](https://github.com/influxdata/influx-stress) to create data for your Sandbox.
+To map the bucket as per the v1.0 requirement: 
+influx v1 dbrp create \
+>   --org=org \
+>   --token=qUWVacO43dVF4x9Mea4OtEmIycsBt6Ie82TWHMz-uiZ5RqM0cBhux5vws8TSpvm2XhMzbgrK7mY-FurT6BvLRA== \
+>   --db bucket-db \
+>   --rp bucket-rp \
+>   --bucket-id 6f077cf310faf6e5 \ (ID can be see in influxdb - data -buckets ) 
+>   --default
 
-![Dashboard](./documentation/static/images/sandbox-dashboard.png)
+Reference: https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/
