@@ -1,0 +1,6 @@
+dbrp "bucket-db"."bucket-rp"
+
+stream
+    |from()
+        .measurement('cpu')
+    |httpOut('dump')
