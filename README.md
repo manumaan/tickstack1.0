@@ -73,12 +73,13 @@ Kapacitor is not getting added in Chronograf. It is working fine on its own
 Telegraf is not getting added in Chronograf, but it is collecting system metrics fine and inserting into influx db. 
 
 To map the bucket as per the v1.0 requirement: 
+```
 influx v1 dbrp create \
->   --org=org \
->   --token=qUWVacO43dVF4x9Mea4OtEmIycsBt6Ie82TWHMz-uiZ5RqM0cBhux5vws8TSpvm2XhMzbgrK7mY-FurT6BvLRA== \
->   --db bucket-db \
->   --rp bucket-rp \
->   --bucket-id 6f077cf310faf6e5 \ (ID can be see in influxdb - data -buckets ) 
->   --default
-
+   --org=org \
+   --token=qUWVacO43dVF4x9Mea4OtEmIycsBt6Ie82TWHMz-uiZ5RqM0cBhux5vws8TSpvm2XhMzbgrK7mY-FurT6BvLRA== \
+   --db bucket-db \
+   --rp bucket-rp \
+   --bucket-id 6f077cf310faf6e5 \ (ID can be see in influxdb - data -buckets ) 
+   --default
+```
 Reference: https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/
