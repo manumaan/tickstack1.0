@@ -58,10 +58,12 @@ Password: admin123
 Bucket: bucket1
 Ensure the database initialization is completed. 
 
-If telegraf docker container is not running yet, restart it from docker desktop and check status. 
+Copy the Admin's token from Data-Tokens screen and paste in telegraf.conf and kapacitor.conf. 
+
+Restart telegraf docker from docker desktop and check status. 
 Once telegraf is running, you can check the system metrics coming inside the bucket1 database. 
 
-If kapacitor docker container is not running yet, restart it from docker desktop and check status. 
+Restart kapacitor docker container from docker desktop and check status. 
 
 From Chronograf you can add the database into the config as given here:
 https://docs.influxdata.com/chronograf/v1.9/administration/creating-connections/#manage-influxdb-connections-using-the-chronograf-ui
