@@ -103,4 +103,4 @@ Reference:
 https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/
 https://www.sqlpac.com/en/documents/influxdb-v2-getting-started-setup-preparing-migration-from-version-1.7.html
 https://docs.influxdata.com/influxdb/v2.0/tools/chronograf/
-
+https://github.com/influxdata/chronograf/issues/2830
