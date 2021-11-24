@@ -30,8 +30,9 @@ sandbox commands:
 
 To get started just run `./sandbox up`. You browser will open two tabs:
 
-- `localhost:8086` - InfluxDB's address. You will use this as a management UI for the Influx DB
-- `localhost:8888` - Chronograf's address. You will use this as a management UI for the full stack
+- `localhost:8086` - InfluxDB's address. You will use this as a management UI for the Influx DB and dashboards etc starting from 2.0
+- `localhost:8888` - Chronograf's address. In 1.x Chronograf was the central tool. 
+                     Below we will be doing some steps to ensure backward compatibility with chronograf. 
 - `localhost:3010` - Documentation server. This contains a simple markdown server for tutorials and documentation.
 
 
@@ -45,33 +46,40 @@ Enter these details:
 Org: org
 User: admin 
 Password: admin123
-Bucket: bucket1
+Bucket: telegraf (Bucket name has to be telegraf for chornograf to work) 
 Ensure the database initialization is completed. 
 
-Copy the Admin's token from Data-Tokens screen and paste in telegraf.conf and kapacitor.conf. 
+Copy the Admin's token from Data-> API Tokens screen and paste in telegraf.conf and kapacitor.conf. 
 
 Restart telegraf docker from docker desktop and check status. 
-Once telegraf is running, you can check the system metrics coming inside the bucket1 database. 
+Once telegraf is running, you can check the system metrics coming inside the telegraf database. 
 
 Restart kapacitor docker container from docker desktop and check status. 
 
 From Chronograf you can add the database into the config as given here:
 https://docs.influxdata.com/chronograf/v1.9/administration/creating-connections/#manage-influxdb-connections-using-the-chronograf-ui
 URL for influxDB: http://influxdb:8086
+Org: org
+Token: Value from API Tokens screen
+Database: telegraf
+Retention Policy: autogen 
+
 URL for Kapacitor: http://kapacitor:9092
+Leave other fields blank/default. 
 
-TODO: 
-Telegraf is not getting added in Chronograf, but it is collecting system metrics fine and inserting into influx db. 
+Influx DB 2.0 does not have databases and retention policies, it has buckets which combine both. To support tools like Chronograf, we need to create mapping between our bucket and db, rp combination. For this login to the influxdb: 
 
-To map the bucket as per the v1.0 requirement: 
+./sandbox enter influxdb
+
+To map the bucket as per the v1.0 requirement enter below command. Token value is from API Tokens screen, and bucket-id is from Data->Buckets screen. 
+
 ```
 influx v1 dbrp create \
    --org=org \
-   --token=qUWVacO43dVF4x9Mea4OtEmIycsBt6Ie82TWHMz-uiZ5RqM0cBhux5vws8TSpvm2XhMzbgrK7mY-FurT6BvLRA== \
-   --db bucket-db \
-   --rp bucket-rp \
-   --bucket-id 6f077cf310faf6e5 \ (ID can be see in influxdb - data -buckets ) 
-   --default
+   --token=LLDY7DAD3VLT_MytcF1AX7A72qOgEFlR3GG98HNGp0Now0zaz0H1ACWcZoI6xQb5-qiT8LR8jPpTzQGJUEKGlg== \
+   --db telegraf \
+   --rp autogen \
+   --bucket-id ff28b87f09e61d21 --default
 ```
 
 ### Grafana
@@ -81,9 +89,18 @@ Enter these and change the default password.
 
 Configuration:
 Left side menu (+ icon)  -> create -> Dashboard -> Create a sample dashboard. Save. 
-Left side menu (gear icon) -> configuration - Data Source 
+Left side menu (gear icon) -> configuration - Data Source (Select influxdb) 
+Change query language to Flux (influxql only supported in 1.x)
+
  HTTP url:  http://influxdb:8086 
  Database: telegraf
+ Org: org
+ Token: value from the API Tokens
+ 
 Click Save & Test
 
-Reference: https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/
+Reference: 
+https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/
+https://www.sqlpac.com/en/documents/influxdb-v2-getting-started-setup-preparing-migration-from-version-1.7.html
+https://docs.influxdata.com/influxdb/v2.0/tools/chronograf/
+
