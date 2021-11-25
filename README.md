@@ -43,10 +43,12 @@ Once the Sandbox launches, you should see your dashboard appear in your browser:
 ### Configuration Steps 
 Once sandbox is up, login to the influx db admin page: http://localhost:8086/
 Enter these details:
+```
 Org: org
 User: admin 
 Password: admin123
 Bucket: telegraf (Bucket name has to be telegraf for chornograf to work) 
+```
 Ensure the database initialization is completed. 
 
 Copy the Admin's token from Data-> API Tokens screen and paste in telegraf.conf and kapacitor.conf. 
@@ -58,14 +60,20 @@ Restart kapacitor docker container from docker desktop and check status.
 
 From Chronograf you can add the database into the config as given here:
 https://docs.influxdata.com/chronograf/v1.9/administration/creating-connections/#manage-influxdb-connections-using-the-chronograf-ui
+
+Influx DB config:
+```
 URL for influxDB: http://influxdb:8086
 Org: org
 Token: Value from API Tokens screen
 Database: telegraf
 Retention Policy: autogen 
-
+```
+Kapacitor config:
+```
 URL for Kapacitor: http://kapacitor:9092
 Leave other fields blank/default. 
+```
 
 Influx DB 2.0 does not have databases and retention policies, it has buckets which combine both. To support tools like Chronograf, we need to create mapping between our bucket and db, rp combination. For this login to the influxdb: 
 
@@ -84,23 +92,34 @@ influx v1 dbrp create \
 
 ### Grafana
 Grafana can be accessed at localhost:3000 
+
 Default credentials for Grafana: admin/admin 
+
 Enter these and change the default password. 
 
 Configuration:
 Left side menu (+ icon)  -> create -> Dashboard -> Create a sample dashboard. Save. 
+
 Left side menu (gear icon) -> configuration - Data Source (Select influxdb) 
+
 Change query language to Flux (influxql only supported in 1.x)
 
+```
  HTTP url:  http://influxdb:8086 
  Database: telegraf
  Org: org
  Token: value from the API Tokens
+ ```
+ 
  
 Click Save & Test
 
+
 Reference: 
 https://www.influxdata.com/blog/running-influxdb-2-0-and-telegraf-using-docker/
+
 https://www.sqlpac.com/en/documents/influxdb-v2-getting-started-setup-preparing-migration-from-version-1.7.html
+
 https://docs.influxdata.com/influxdb/v2.0/tools/chronograf/
+
 https://github.com/influxdata/chronograf/issues/2830
