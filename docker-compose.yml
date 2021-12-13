@@ -61,6 +61,16 @@ services:
       # The API for Kapacitor is served on port 9092
       - "9092:9092"
       
+    renderer:
+    build:
+      context: ./images/renderer/
+      dockerfile: ./${TYPE}/Dockerfile
+      args:
+        TELEGRAF_TAG: ${TELEGRAF_TAG}
+    image: "renderer"
+    ports:
+      - 8081      
+      
   grafana:
     # Full tag list: https://hub.docker.com/r/library/telegraf/tags/
     build:
