@@ -61,7 +61,7 @@ services:
       # The API for Kapacitor is served on port 9092
       - "9092:9092"
       
-    renderer:
+  renderer:
     build:
       context: ./images/renderer/
       dockerfile: ./${TYPE}/Dockerfile
