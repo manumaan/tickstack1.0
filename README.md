@@ -63,3 +63,23 @@ If you are using the nightly builds and want to get started with Flux, make sure
 > Note: see [influx-stress](https://github.com/influxdata/influx-stress) to create data for your Sandbox.
 
 ![Dashboard](./documentation/static/images/sandbox-dashboard.png)
+
+### InfluxDB
+Inserting data into InfluxDB CLI:
+Login to the influxDB docker container from docker desktop. Enter the command 
+```
+influx
+```
+to start CLI
+```
+SHOW DATABASES - Lists databases
+USE <DATABASE_NAME> - Select this DB for next commands. 
+SHOW MEASUREMENTS - lists measurements
+```
+Example Insert command: 
+```
+INSERT redis,host=serverA,region=us_west value=0.64
+```
+This will insert one row into the redis measurement, which if did not exist till then will get created as well. 
+
+
