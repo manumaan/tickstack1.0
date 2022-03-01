@@ -1,0 +1,8 @@
+stream
+    |from()
+        .database('telegraf')
+        .retentionPolicy('autogen')
+        .measurement('redis')
+    |deadman(0.0, 1m)
+        .message('No points came in redis')
+        .stateChangesOnly()
