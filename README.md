@@ -90,6 +90,8 @@ docker exec -it [<container_name ]  /bin/sh
 ```
 influx -precision rfc3339 (Precision setting allows to show timestamps in human-readable form)
 ```
+
+```
 show databases -> shows available databases
 use [databasename] -> select the database for next commands
 show measurements -> shows measurements
