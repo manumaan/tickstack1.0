@@ -83,3 +83,47 @@ INSERT redis,host=serverA,region=us_west value=0.64
 This will insert one row into the redis measurement, which if did not exist till then will get created as well. 
 
 
+Querying influx DB:
+To login to the influxdb cli, open a terminal on the influxdb container from docker desktop or using command prompt:
+docker exec -it [<container_name ]  /bin/sh 
+
+influx -precision rfc3339 (Precision setting allows to show timestamps in human-readable form)
+
+show databases -> shows available databases
+use [databasename] -> select the database for next commands
+show measurements -> shows measurements
+fields are numeric,non-indexed and tags are alphanumeric-indexed (mostly). Tags are strings.
+show field keys from cpu - see all field names from cpu measurements
+show tag keys from cpu - see all tag names from cpu measurements 
+show tag values from cpu - see all tag values from cpu measurements
+SHOW TAG VALUES CARDINALITY FROM cpu WITH KEY = "cpu" - number of distinct values of the tag 'cpu' in the measurement 'cpu'
+
+At least one field column should be given in SELECT statement. 
+We cannot use OR on the time values. 
+Strings should be enclosed in quotes. 
+In some error cases, no error is returned, and no data also. 
+Cannot use maths within functions, ie not possible to do avg(gross-net)
+
+GROUP BY TIME 
+SELECT mean("water_level") FROM "h2o_feet" where time>='2019-09-17T20:00:00Z' group by time(10m)
+SELECT mean("water_level") FROM "h2o_feet" where time>='2019-09-17T20:00:00Z' group by time(10m),location
+SELECT mean("water_level") FROM "h2o_feet" where time>='2019-09-17T20:00:00Z' group by location, time(10m) fill(0)
+
+CTAS in influxdb
+SELECT * INTO "NOAA_water_database"."autogen".water_levels_bkp FROM h2o_feet GROUP BY *
+
+ORDER BY TIME
+ORDER by time DESC
+SELECT mean("water_level") FROM "h2o_feet" WHERE "location" = 'santa_monica' AND time>='2019-09-17T20:00:00Z'  GROUP BY TIME(5m) ORDER BY time DESC LIMIT 5
+
+Pagination
+ SELECT "water_level","location" FROM "h2o_feet" LIMIT 3 OFFSET 3
+
+ SELECT mean("water_level") FROM "h2o_feet" where time>='2019-09-17T20:00:00Z' tz('America/Chicago')
+ SELECT mean("water_level") FROM "h2o_feet" where time>='2019-09-17T20:00:00Z' tz('Asia/Calcutta')
+
+ SELECT "water_level" FROM "h2o_feet" WHERE time > now() - 1h
+
+ SELECT "level description" FROM "h2o_feet" WHERE time >= '2019-09-17T21:36:00Z'
+
+
