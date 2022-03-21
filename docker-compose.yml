@@ -116,7 +116,24 @@ services:
       - kapacitor
       - influxdb
       - telegraf
-
+      
+  influxdb-relay:
+    # Full tag list: https://hub.docker.com/r/library/telegraf/tags/
+    build:
+      context: ./images/relay/
+      dockerfile: ./${TYPE}/Dockerfile
+    image: "influxdb-relay"
+    environment:
+      HOSTNAME: "influxdb-relay"
+    # Telegraf requires network access to InfluxDB
+    links:
+      - influxdb
+    ports:
+      # The WebUI for Chronograf is served on port 8888
+      - "9096:9096"  
+    depends_on:
+      - influxdb
+      
   documentation:
     build:
       context: ./documentation
