@@ -1,0 +1,33 @@
+#Below steps in a Dockerfile will create influxdb-relay binary inside /go/bin folder. 
+
+FROM centos:8
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
+RUN yum -y update 
+RUN yum -y install wget git
+
+RUN rm -rf /usr/local/go 
+RUN wget https://go.dev/dl/go1.17.2.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
+RUN export PATH=$PATH:/usr/local/go/bin
+ENV PATH=$PATH:/usr/local/go/bin
+RUN export GOPATH=$HOME/go
+ENV GOPATH=$HOME/go
+
+WORKDIR $GOPATH/src/github.com/influxdata/influxdb-relay
+RUN git clone https://github.com/influxdata/influxdb-relay.git
+WORKDIR $GOPATH/src/github.com/influxdata/influxdb-relay/influxdb-relay
+RUN go install 
+
+#Below steps in a Dockerfile adds the binary file to a docker image with a relay.toml config file 
+#It will start the influxdb-relay when the container starts.
+FROM centos:8
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-*
+RUN yum -y update 
+COPY /latest/influxdb-relay  /usr/local/bin/influxdb-relay 
+COPY /latest/relay.toml /etc/influxdb-relay/relay.toml 
+RUN export PATH=$PATH:/usr/local/bin
+ENV PATH=$PATH:/usr/local/bin
+EXPOSE 9096
+CMD /usr/local/bin/influxdb-relay  -config /etc/influxdb-relay/relay.toml
