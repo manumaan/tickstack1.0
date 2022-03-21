@@ -138,3 +138,24 @@ Pagination
  SELECT "level description" FROM "h2o_feet" WHERE time >= '2019-09-17T21:36:00Z'
 ```
 
+### InfluxDB Relay 
+Influxdb relay adds a high availability layer to the InfluxDB. Here for demo purpose, there is only one backend on the Relay, not real high availability :) 
+To write to the InfluxDB using the relay endpoint, below command can be used from the Relay container terminal: 
+
+```
+curl -i -XPOST 'http://localhost:9096/write?db=telegraf' \
+--data-binary 'relay_test,host=server01,region=us-west value=0.96 1647873106000000000'
+```
+
+This will internally call the backend InfluxDB url using the command as below: 
+```
+curl -i -XPOST 'http://influxdb:8086/write?db=telegraf' \
+--data-binary 'relay_test,host=server01,region=us-west value=0.96 1647873106000000000'
+```
+
+Data can be verified on the influxdb container terminal like so:
+```
+ select * from relay_test
+
+
+
