@@ -1,0 +1,1 @@
+FROM manumaan/influxdbrelay:latest
