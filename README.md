@@ -156,6 +156,24 @@ curl -i -XPOST 'http://influxdb:8086/write?db=telegraf' \
 Data can be verified on the influxdb container terminal like so:
 ```
  select * from relay_test
+```
+Relay can be pinged by the below command. Look for X-Influxdb-Version: relay in the output
+```
+sh-4.4# curl -kv http://localhost:9096/ping
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 9096 (#0)
+> GET /ping HTTP/1.1
+> Host: localhost:9096
+> User-Agent: curl/7.61.1
+> Accept: */*
+> 
+< HTTP/1.1 204 No Content
+< X-Influxdb-Version: relay
+< Date: Mon, 21 Mar 2022 16:01:37 GMT
+< 
+* Connection #0 to host localhost left intact
+```
 
 
 
