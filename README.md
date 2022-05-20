@@ -6,7 +6,7 @@ CHRONOGRAF latest
 KAPACITOR 1.5.5
 GRAFANA 7.1.0 
 
-### Running
+### How to Run Sandbox
 
 To run the `sandbox`, simply use the convenient cli:
 
