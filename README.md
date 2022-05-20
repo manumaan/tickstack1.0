@@ -1,9 +1,13 @@
 # Custom TICK stack Sandbox
 This is a custom TICK stack sandbox with:  
 TELEGRAF 1.13
+
 INFLUXDB 1.8
+
 CHRONOGRAF latest
+
 KAPACITOR 1.5.5
+
 GRAFANA 7.1.0 
 
 ### How to Run Sandbox
