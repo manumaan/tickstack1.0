@@ -180,4 +180,27 @@ sh-4.4# curl -kv http://localhost:9096/ping
 ```
 
 
+### Demo 
+Enter the telegraf container and install stress command. 
+
+     ./sandbox enter telegraf
+     apt-get update 
+     apt-get install stress 
+
+
+Run the stress command with a timeout of 60 sec. 
+
+    stress --cpu  8 --timeout 60
+
+Goto chronograph and enter the query:
+
+    SELECT  mean("usage_user") AS "mean_usage_user" FROM "telegraf"."autogen"."cpu" WHERE time > :dashboardTime: AND time < :upperDashboardTime: GROUP BY time(:interval:) FILL(null)
+
+Select "past 5 min" on the time drop down. You should see the spike in the CPU usage. 
+
+Goto Grafana and enter the query:
+`SELECT mean("usage_user") FROM "cpu" WHERE $timeFilter GROUP BY time(10s) fill(null`)
+
+Select "past 5 min" on the time drop down. You should see the spike in the CPU usage. 
+
 
