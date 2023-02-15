@@ -207,5 +207,7 @@ Goto Alerting - Tickscript and save the script from CPU_Util.tick.
 Now again run the stress command to generate stress. 
 Check in the  table alerts. There should be record for the alert that was generated.
 
+```
 SELECT mean("value") AS "mean_value" FROM "telegraf"."autogen"."alerts" WHERE time > :dashboardTime: AND time < :upperDashboardTime: GROUP BY time(:interval:) FILL(null)
+```
 
