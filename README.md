@@ -190,7 +190,7 @@ Enter the telegraf container and install stress command.
 
 Run the stress command with a timeout of 60 sec. 
 
-    stress --cpu  8 --timeout 60
+    stress --cpu  16 --timeout 60
 
 Goto chronograph and enter the query:
 
@@ -203,4 +203,9 @@ Goto Grafana and enter the query:
 
 Select "past 5 min" on the time drop down. You should see the spike in the CPU usage. 
 
+Goto Alerting - Tickscript and save the script from CPU_Util.tick. 
+Now again run the stress command to generate stress. 
+Check in the  table alerts. There should be record for the alert that was generated.
+
+SELECT mean("value") AS "mean_value" FROM "telegraf"."autogen"."alerts" WHERE time > :dashboardTime: AND time < :upperDashboardTime: GROUP BY time(:interval:) FILL(null)
 
